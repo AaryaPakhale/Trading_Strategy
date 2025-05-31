@@ -80,8 +80,8 @@ To run the simulations:
 # Clone the repository
 git clone https://github.com/yourusername/trading_strategy.git
 cd trading_strategy
-# Install dependencies
 
+# Install dependencies
 pip install -r requirements.txt
 
 # Run the market making simulation
