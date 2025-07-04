@@ -60,14 +60,9 @@ To reproduce the results:
 # Install dependencies
 pip install -r requirements.txt
 
-# Run Task 1: Generate weights for all 5 strategies
-python main.py --task 1
+# Run all tasks
+python notebook.py
 
-# Run Task 2: Apply ML selector and generate final weights/performance
-python main.py --task 2
-
-# Run Task 3: Apply turnover-aware strategy selection
-python main.py --task 3
 ```
 
 ---
