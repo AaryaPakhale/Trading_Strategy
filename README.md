@@ -1,94 +1,114 @@
-# Nomura Quant Challenge 2025 - Trading Strategies
+# 📈 Trading Challenge – Multi-Strategy Ensemble with ML Selection
 
-Welcome to our repository for the **Nomura Quant Challenge 2025**. This project implements quantitative trading strategies with a focus on market making and risk mitigation, developed during the challenge.
-
-## Contents
-
-- [Overview](#overview)
-- [Strategy Summary](#strategy-summary)
-- [Methodology](#methodology)
-- [Model Design](#model-design)
-- [Risk Management](#risk-management)
-- [Performance Evaluation](#performance-evaluation)
-- [Usage Instructions](#usage-instructions)
-- [Team](#team)
+This repository contains the complete solution for a multi-strategy trading challenge involving 20 stocks over 4000 trading days. The solution includes 5 alpha-generating strategies and a machine learning-based ensemble model to select the best strategy per day.
 
 ---
 
-## Overview
+## 🧩 Problem Overview
 
-This project was built as part of the Nomura Quant Challenge 2025, where the objective was to develop and implement trading strategies on equities data. The main goals were:
+The goal is to:
+1. Design **5 individual trading strategies** that assign weights to stocks based on historical price data.
+2. Develop a **daily strategy selector** that picks the best strategy using only past information.
 
-- To build a market making strategy with inventory and risk constraints.
-- To implement a risk mitigation strategy to minimize portfolio Value at Risk (VaR).
-- To simulate real-world trading dynamics using historical order book and trade data.
+---
 
-## Strategy Summary
+## 📊 Task Breakdown
 
-We developed two major components:
+### ✅ Task 1: Individual Trading Strategies
 
-1. **Market Making Strategy**:
-   - Generates bid-ask quotes using alpha signals, trend detection, and inventory management.
-   - Adheres to tick size and inventory constraints with penalties factored into P&L.
+Implemented 5 strategies using price-based technical indicators:
 
-2. **Risk Mitigation Strategy**:
-   - Constructs hedges for a portfolio using liquid equities.
-   - Minimizes 95% historical VaR and capital cost using historical return covariance.
+| Strategy | Description |
+|----------|-------------|
+| **Strategy 1** | Weekly returns mean-reversion (long losers, short winners) |
+| **Strategy 2** | Short vs Long-term Moving Average Divergence |
+| **Strategy 3** | Rate of Change (ROC) momentum reversal |
+| **Strategy 4** | Support/Resistance proximity-based breakout logic |
+| **Strategy 5** | Stochastic %K oscillator (14-day high/low band positioning) |
 
-## Methodology
+Each strategy outputs a weight vector of size 20 per day (weights sum to 1 and -1 for long and short sides).
 
-- **Data**: Historical L2 order book data and trade data were used.
-- **Signal Generation**: Alpha signals were generated using statistical momentum indicators and recent price changes.
-- **Execution**: Orders were simulated under strict tick size and timing constraints.
-- **Backtesting**: Strategies were tested over multiple time periods and evaluated on P&L, Sharpe ratio, and VaR reduction.
+---
 
-## Model Design
+### ✅ Task 2: Machine Learning-Based Strategy Selector
 
-- **Market Maker**:
-  - Quote prices were adjusted based on recent price trends and inventory exposure.
-  - Used trend-following alpha with mean reversion tendencies.
+A robust ensemble model dynamically selects one of the five strategies each day using engineered market features.
 
-- **Risk Hedge**:
-  - Portfolio covariance matrix estimated from historical returns.
-  - Optimization problem solved to minimize portfolio VaR given a capital budget.
+#### 📌 Feature Engineering
+12 features designed to capture market regimes:
+- Short-term and long-term volatility
+- Trend acceleration and mean returns
+- Momentum skew and dispersion
+- Market-wide average correlation
+- Volume metrics and efficiency measures
 
-## Risk Management
+#### 🧠 Model Ensemble
+- **Random Forest (Stable)**: shallow, high-regularization
+- **Logistic Regression (L1)**: interpretable, sparse
+- **Random Forest (Variant)**: different seed and depth
 
-- **Market Making**:
-  - Real-time inventory control with quote-skew adjustments.
-  - Penalties imposed for large inventory holdings and adverse fills.
+A **voting mechanism** selects the final strategy daily, unless a single model clearly outperforms on the CV set.
 
-- **Portfolio Hedging**:
-  - 95% historical VaR calculated using rolling window.
-  - Capital usage constraints enforced to simulate real-world risk limits.
+---
 
-## Performance Evaluation
 
-- **Metrics**:
-  - Net P&L, inventory penalty, execution cost.
-  - Risk-adjusted returns and VaR reduction effectiveness.
+## 🧪 Reproducibility
 
-- **Results**:
-  - Consistent profits under normal volatility conditions.
-  - Effective hedging of portfolio tail risk using a sparse hedge basket.
-
-## Usage Instructions
-
-To run the simulations:
+To reproduce the results:
 
 ```bash
-# Clone the repository
-git clone https://github.com/AaryaPakhale/trading_strategy.git
-cd trading_strategy
-
 # Install dependencies
 pip install -r requirements.txt
 
-# Run the market making simulation
-python simulate_market_maker.py
+# Run Task 1: Generate weights for all 5 strategies
+python main.py --task 1
 
-# Run the portfolio risk mitigation module
-python hedge_portfolio.py
+# Run Task 2: Apply ML selector and generate final weights/performance
+python main.py --task 2
 
+# Run Task 3: Apply turnover-aware strategy selection
+python main.py --task 3
 ```
+
+---
+
+## 📈 Evaluation Metrics
+
+- **CAGR**
+- **Sharpe Ratio**
+- **Max Drawdown**
+- **Volatility**
+- **Strategy selection consistency**
+- **Net vs Gross return analysis under transaction costs**
+
+---
+
+## 📝 Documentation
+
+Full methodology, feature definitions, model choices, and performance visualizations are available in `PS/documentation_3.pdf`.
+
+---
+
+## 🎓 Author
+
+- **Name:** Aarya Pakhale  
+- **Challenge:** [Nomura Global Markets Quant Challenge]  
+- **Status:** Finalist  
+
+---
+
+## 📫 Contact
+
+For inquiries or collaboration opportunities:
+
+- 📧 [aaryapakhale01@gmail.com]  
+- 🌐 [[LinkedIn URL](https://www.linkedin.com/in/aarya-pakhale-0b9788217/)]
+
+---
+
+## 🏁 License
+
+This project is provided under the MIT License.
+
+
 
