@@ -78,7 +78,7 @@ To run the simulations:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/trading_strategy.git
+git clone https://github.com/AaryaPakhale/trading_strategy.git
 cd trading_strategy
 
 # Install dependencies
